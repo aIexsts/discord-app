@@ -6,9 +6,9 @@ import {
   Route,
   Navigate
 } from 'react-router-dom';
-import LoginPage from './pages/auth/login/LoginPage'
-import RegisterPage from './pages/auth/register/RegisterPage'
-import Dashboard from './pages/dashboard/Dashboard'
+import LoginPage from './components/pages/auth/login/LoginPage'
+import RegisterPage from './components/pages/auth/register/RegisterPage'
+import Dashboard from './components/pages/dashboard/Dashboard'
 
 function App() {
   return (
