@@ -9,6 +9,7 @@ import {
 import LoginPage from './components/pages/auth/login/LoginPage'
 import RegisterPage from './components/pages/auth/register/RegisterPage'
 import Dashboard from './components/pages/dashboard/Dashboard'
+import AlertNotification from './components/shared/AlertNotification';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/" element={<Navigate replace to="/dashboard" />} />
         </Routes>
       </Router>
+      <AlertNotification/>
     </>
   );
 }
