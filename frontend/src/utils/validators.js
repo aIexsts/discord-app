@@ -6,7 +6,7 @@ export const validateRegisterForm = ({email,username,password}) => {
     return isEmailValid(email) && isUsernameValid(username) && isPasswordValid(password);
 }
 
-const isEmailValid = (email) => {
+export const isEmailValid = (email) => {
     const emailPattern = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
     return emailPattern.test(email);
 }
