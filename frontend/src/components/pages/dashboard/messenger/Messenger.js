@@ -8,7 +8,7 @@ const MainContainer = styled('div')({
     display: 'flex'
 });
 
-const Messenger = () => {
+const Messenger = ({chosenChatDetails}) => {
     return (
         <MainContainer>
             

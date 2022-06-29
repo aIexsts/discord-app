@@ -32,7 +32,7 @@ const AddFriendButton = () => {
                 isDialogOpen={isDialogOpen}
                 closeDialogHandler={handleCloseAddFriendDialog}
                 sendFriendInvitation={() => {
-
+                    setIsDialogOpen(false);
                 }}
             />
         </>

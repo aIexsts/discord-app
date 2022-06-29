@@ -3,6 +3,8 @@ import { Tooltip, Typography } from '@mui/material';
 import Avatar from '../../../../shared/Avatar';
 import { Box } from '@mui/system';
 import InvitationDecisionButtons from './InvitationDecisionButtons';
+import { connect } from 'react-redux';
+import { getFriendsActions } from '../../../../../store/actions/friendsActions';
 
 const PendingInvitationsListItem = ({
     id,
@@ -58,4 +60,10 @@ const PendingInvitationsListItem = ({
     );
 }
 
-export default PendingInvitationsListItem;
+const mapActionsToProps = (dispatch) => {
+    return {
+        ...getFriendsActions(dispatch)
+    };
+};
+
+export default connect(null, mapActionsToProps)(PendingInvitationsListItem);
