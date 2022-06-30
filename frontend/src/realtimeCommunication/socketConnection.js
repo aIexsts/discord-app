@@ -1,13 +1,14 @@
 import io from 'socket.io-client';
 import {setFriends, setOnlineUsers, setPendingFriendsInvitations} from '../store/actions/friendsActions';
-import store from '../store/store'
+import store from '../store/store';
+import { updateDirectChatHistoryIfActive} from '../utils/chat'
 
 let socket = null;
 
 export const connectWithSocketServer = (userDetails) => {
     const jwtToken = userDetails.token;
 
-    socket = io('http://localhost:5003', {
+    socket = io('http://localhost:5004', {
         auth: {
             token: jwtToken
         }
@@ -32,4 +33,18 @@ export const connectWithSocketServer = (userDetails) => {
         const {onlineUsers} = data;
         store.dispatch(setOnlineUsers(onlineUsers));
     });
+
+    socket.on('direct-chat-history', (data) => {
+        updateDirectChatHistoryIfActive(data);
+    });
+}
+
+// SOCKET ACTIONS
+export const sendDirectMessage = (data) => {
+    console.log(data);
+    socket.emit('direct-message', data);
+}
+
+export const getDirectChatHistory = (data) => {
+    socket.emit('direct-chat-history', data);
 }

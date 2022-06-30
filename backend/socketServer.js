@@ -1,6 +1,8 @@
 const newConnectionHandler = require('./socketHandlers/newConnectionHandler');
 const authSocket = require('./middleware/authSocket');
 const disconnectHandler = require('./socketHandlers/disconnectHandler');
+const directMessageHandler = require('./socketHandlers/directMessageHandler');
+const directChatHistoryHandler = require('./socketHandlers/directChatHistoryHandler');
 const serverStore = require('./serverStore');
 
 const registerSocketServer = (server) => {
@@ -21,9 +23,19 @@ const registerSocketServer = (server) => {
     // on successfully connected
     io.on('connection', (socket) => {
         console.log('user connected:', socket.id);
+
         // connection handlers:
         newConnectionHandler(socket, io);
         emitOnlineUsers();
+
+        socket.on('direct-message', (data) => {
+            directMessageHandler(socket, data);
+        });
+
+        socket.on('direct-chat-history', (data) => {
+            directChatHistoryHandler(socket, data);
+        });
+
         socket.on('disconnect', () => {
             console.log('user disconnected:', socket.id);
             disconnectHandler(socket);

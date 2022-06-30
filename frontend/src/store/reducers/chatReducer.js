@@ -1,4 +1,3 @@
-import { friendsActions } from "../actions/friendsActions";
 import {chatActions} from "../actions/chatActions";
 
 const initState = {
