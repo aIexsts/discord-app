@@ -1,4 +1,8 @@
+const {v4: uuidv4} = require('uuid');
+
 const connectedUsers = new Map();
+let activeRooms = [];
+
 let io = null;
 
 const setSocketServerInstance = (ioInstance) => {
@@ -37,6 +41,76 @@ const getOnlineUsers = () => {
         onlineUsers.push({socketId: key, userId: value.userId});
     });
     return onlineUsers;
+};
+
+// rooms
+const addNewActiveRoom = (userId, socketId) => {
+    const newActiveRoom = {
+        roomCreator: {
+            userId,
+            socketId
+        },
+        participants: [
+            {
+                userId,
+                socketId
+            }
+        ],
+        roomId: uuidv4()
+    };
+
+    activeRooms = [...activeRooms, newActiveRoom];
+    console.log('active rooms', activeRooms);
+
+    return newActiveRoom;
+}
+
+const getActiveRooms = () => {
+    return [...activeRooms];
+}
+
+const getActiveRoom = (roomId) => {
+    const activeRoom = activeRooms.find((
+        activeRoom) => activeRoom.roomId === roomId
+    );
+
+    if (activeRoom) {
+        return {
+            ...activeRoom
+        };
+    } else {
+        return null;
+    }
+}
+
+const joinActiveRoom = (roomId, newParticipant) => {
+    const room = activeRooms.find((room) => room.roomId === roomId);
+    activeRooms = activeRooms.filter((room) => room.roomId !== roomId);
+
+    const updatedRoom = {
+        ...room,
+        participants: [...room.participants, newParticipant]
+    }
+
+    activeRooms.push(updatedRoom);
+};
+
+const leaveActiveRoom = (roomId, participantSocketId) => {
+    const activeRoom = activeRooms.find((room) => room.roomId === roomId);
+
+    if (activeRoom) {
+        const copyOfActiveRoom = {...activeRoom};
+
+        copyOfActiveRoom.participants = copyOfActiveRoom.participants.filter(
+            (participant) => participant.socketId !== participantSocketId
+        );
+
+        activeRooms = activeRooms.filter((room) => room.roomId !== roomId);
+
+        if (copyOfActiveRoom.participants.length > 0) {
+            activeRooms.push(copyOfActiveRoom);
+        }
+    }
 }
 
 module.exports = {
@@ -45,5 +119,10 @@ module.exports = {
     getUserActiveConnections,
     getSocketServerInstance,
     setSocketServerInstance,
-    getOnlineUsers
+    addNewActiveRoom,
+    getOnlineUsers,
+    getActiveRooms,
+    getActiveRoom,
+    joinActiveRoom,
+    leaveActiveRoom
 };
